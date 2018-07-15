@@ -28,4 +28,12 @@ class SearchesController < ApplicationController
       @error = "There was a timeout. Please try again."
       render 'search'
   end
+
+  def friends
+    resp = Daraday.get('https://api.foursquare.com/v2/user/self/friends') do |req|
+      req.params['autho_token'] = session[:token]
+      req.params['v'] = '20160201'
+    end
+    @freinds = JSON.parse(resp.body)['response']['friends']['items']
+  end
 end
